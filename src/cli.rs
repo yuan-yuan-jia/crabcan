@@ -22,7 +22,20 @@ pub struct Args {
 pub fn parse_args() -> Args {
     let args = Args::from_args();
 
-    println!("args: {:?}",&args);
+    if args.debug {
+        setup_log(log::LevelFilter::Debug)
+    } else {
+        setup_log(log::LevelFilter::Info)
+    }
+
+    log::info!("{:?}",args);
 
     args
+}
+
+pub fn setup_log(level: log::LevelFilter) {
+    env_logger::Builder::from_default_env()
+        .format_timestamp_secs()
+        .filter(None, level)
+        .init()
 }
