@@ -3,13 +3,14 @@ use std::fmt;
 
 #[derive(Debug)]
 pub enum Errcode {
-    
+    ArgumentInvalid(&'static str),
 }
 
 #[allow(unreachable_patterns)]
 impl fmt::Display for Errcode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
+            Errcode::ArgumentInvalid(element) => write!(f,"ArgumentInvalid: {}",element),
             _ => write!(f,"{:?}",self)
         }
     }

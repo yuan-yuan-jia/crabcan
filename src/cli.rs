@@ -28,6 +28,10 @@ pub fn parse_args() -> Result<Args,Errcode> {
         setup_log(log::LevelFilter::Info)
     }
 
+    if !args.mount_dir.exists() || !args.mount_dir.is_dir() {
+        return Err(Errcode::ArgumentInvalid("mount"));
+    }
+
     log::info!("{:?}",args);
 
     Ok(args)
