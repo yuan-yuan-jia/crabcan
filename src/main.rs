@@ -1,11 +1,13 @@
 mod errors;
 mod cli;
+mod config;
+mod container;
 
 fn main() {
     match cli::parse_args() {
         Ok(args) => {
           log::info!("{:?}",args);
-          errors::exit_with_retcode(Ok(()))
+          errors::exit_with_retcode(container::start(args))
         },
         Err(e) => {
            log::error!("Error while parsing arguments:\n]t{}",e);
