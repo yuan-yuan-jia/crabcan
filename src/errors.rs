@@ -3,6 +3,8 @@ use std::fmt;
 
 #[derive(Debug)]
 pub enum Errcode {
+    ContainerError(u8),
+    NotSupported(u8),
     ArgumentInvalid(&'static str),
 }
 
