@@ -3,6 +3,7 @@ mod errors;
 mod ipc;
 mod cli;
 mod config;
+mod child;
 mod container;
 
 fn main() {

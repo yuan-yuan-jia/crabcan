@@ -7,6 +7,7 @@ pub enum Errcode {
     NotSupported(u8),
     ArgumentInvalid(&'static str),
     SocketError(u8),
+    ChildProcessError(u8),
 }
 
 #[allow(unreachable_patterns)]
