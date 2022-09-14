@@ -2,6 +2,7 @@ use crate::config::ContainerOpts;
 use crate::cli::Args;
 use crate::errors::Errcode;
 use crate::child::generate_child_process;
+use crate::mounts::clean_mounts;
 use nix::sys::utsname::uname;
 use nix::unistd::{close,Pid};
 use std::os::unix::io::RawFd;
@@ -40,6 +41,7 @@ impl Container {
 
     pub fn clean_exit(&mut self) -> Result<(),Errcode> {
         log::debug!("Cleaning container");
+        clean_mounts(&self.config.mount_dir)?;
         if let Err(e) = close(self.sockets.0) {
             log::error!("Unable to close write socket: {:?}",e);
             return Err(Errcode::SocketError(3));
