@@ -1,5 +1,6 @@
 #[macro_use] extern crate scan_fmt;
 mod errors;
+mod hostname;
 mod ipc;
 mod cli;
 mod config;

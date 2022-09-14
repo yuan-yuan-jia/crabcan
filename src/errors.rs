@@ -8,6 +8,8 @@ pub enum Errcode {
     ArgumentInvalid(&'static str),
     SocketError(u8),
     ChildProcessError(u8),
+    HostnameError(u8),
+    RngError,
 }
 
 #[allow(unreachable_patterns)]
