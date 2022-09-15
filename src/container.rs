@@ -3,6 +3,7 @@ use crate::cli::Args;
 use crate::errors::Errcode;
 use crate::child::generate_child_process;
 use crate::mounts::clean_mounts;
+use crate::namespace::handle_child_uid_map;
 use nix::sys::utsname::uname;
 use nix::unistd::{close,Pid};
 use std::os::unix::io::RawFd;
@@ -35,6 +36,7 @@ impl Container {
     pub fn create(&mut self) -> Result<(),Errcode> {
         let pid = generate_child_process(self.config.clone())?;
         self.child_pid = Some(pid);
+        handle_child_uid_map(pid, self.sockets.0)?;
         log::debug!("Creation finished");
         Ok(())
     }
