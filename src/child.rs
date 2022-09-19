@@ -4,6 +4,7 @@ use crate::hostname::set_container_hostname;
 use crate::mounts::setmountpoint;
 use crate::namespace::userns;
 use crate::capabilities::setcapabilities;
+use crate::syscalls::setsyscalls;
 use nix::unistd::{Pid,close};
 use nix::sched::{clone,CloneFlags};
 use nix::sys::signal::Signal;
@@ -52,5 +53,6 @@ fn setup_container_configurations(config: &ContainerOpts) -> Result<(),Errcode> 
    setmountpoint(&config.mount_dir)?;
    userns(config.fd,config.uid)?;
    setcapabilities()?;
+   setsyscalls()?;
    Ok(())
 }
