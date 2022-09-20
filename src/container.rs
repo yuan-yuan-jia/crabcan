@@ -4,6 +4,8 @@ use crate::errors::Errcode;
 use crate::child::generate_child_process;
 use crate::mounts::clean_mounts;
 use crate::namespace::handle_child_uid_map;
+use crate::resources::restrict_resources;
+use crate::resources::clean_cgroups;
 use nix::sys::utsname::uname;
 use nix::unistd::{close,Pid};
 use std::os::unix::io::RawFd;
@@ -35,6 +37,7 @@ impl Container {
 
     pub fn create(&mut self) -> Result<(),Errcode> {
         let pid = generate_child_process(self.config.clone())?;
+        restrict_resources(&self.config.hostname,pid)?;
         self.child_pid = Some(pid);
         handle_child_uid_map(pid, self.sockets.0)?;
         log::debug!("Creation finished");
@@ -52,6 +55,12 @@ impl Container {
             log::error!("Unable to close read socket: {:?}",e);
             return Err(Errcode::SocketError(4));
         }
+
+        if let Err(e) = clean_cgroups(&self.config.hostname){
+            log::error!("Cgroups cleaning failed: {}", e);
+            return Err(e);
+        }
+        
         Ok(())
     }
 }

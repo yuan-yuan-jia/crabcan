@@ -14,6 +14,7 @@ pub enum Errcode {
     NamespacesError(u8),
     CapabilitiesError(u8),
     SyscallsError(u8),
+    ResourcesError(u8),
 }
 
 #[allow(unreachable_patterns)]
